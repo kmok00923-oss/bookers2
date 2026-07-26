@@ -1,0 +1,27 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-1">
+      <h1>Users</h1>
+      <div class="row">
+        <% @users.each do |user| %>
+          <div class="col-md-3 mb-3">
+            <div class="card text-center">
+              <div class="card-body">
+                <%= link_to user_path(user) do %>
+                  <% if user.profile_image.attached? %>
+                    <%= image_tag user.profile_image, class: "rounded-circle mb-2", style: "width:80px; height:80px; object-fit:cover;" %>
+                  <% else %>
+                    <%= image_tag "https://via.placeholder.com/80", class: "rounded-circle mb-2" %>
+                  <% end %>
+                <% end %>
+                <h5 class="card-title"><%= user.name %></h5>
+                <%= link_to "Show", user_path(user), class: "btn btn-sm btn-outline-primary" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <%= render "shared/sidebar", user: Current.session.user %>
+  </div>
+</div>

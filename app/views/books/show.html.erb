@@ -1,0 +1,16 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-1">
+      <h1>Book detail</h1>
+      <p><%= link_to @book.user.name, user_path(@book.user) %></p>
+      <h3><%= @book.title %></h3>
+      <p><%= @book.body %></p>
+
+      <% if @book.user == Current.session.user %>
+        <%= link_to "Edit", edit_book_path(@book), class: "btn btn-secondary" %>
+        <%= link_to "Destroy", book_path(@book), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
+      <% end %>
+    </div>
+    <%= render "shared/sidebar", user: @book.user %>
+  </div>
+</div>
