@@ -2,15 +2,46 @@
   <div class="row">
     <div class="col-md-8 offset-md-1">
       <h1>Book detail</h1>
+
       <p><%= link_to @book.user.name, user_path(@book.user) %></p>
+
       <h3><%= @book.title %></h3>
       <p><%= @book.body %></p>
 
+      <!-- ここにいいねボタンを入れる -->
+      <%= render 'favorites/favorite', book: @book %>
+      
+      <h3>コメント一覧（<%= @book.book_comments.count %>件）</h3>
+
+<% @book.book_comments.each do |comment| %>
+  <div class="border p-2 mb-2">
+    <strong><%= comment.user.name %></strong>
+    <p><%= comment.comment %></p>
+
+    <% if comment.user == Current.session.user %>
+      <%= link_to "削除",
+          book_book_comment_path(@book, comment),
+          data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
+          class: "btn btn-sm btn-danger" %>
+    <% end %>
+  </div>
+<% end %>
+
+<h4>コメントを書く</h4>
+<%= form_with model: [@book, BookComment.new], local: true do |f| %>
+  <%= f.text_area :comment, rows: 3, class: "form-control mb-2" %>
+  <%= f.submit "投稿する", class: "btn btn-primary" %>
+<% end %>
+
+
       <% if @book.user == Current.session.user %>
         <%= link_to "Edit", edit_book_path(@book), class: "btn btn-secondary" %>
-        <%= link_to "Destroy", book_path(@book), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        <%= link_to "Destroy", book_path(@book),
+              data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+              class: "btn btn-danger" %>
       <% end %>
     </div>
+
     <%= render "shared/sidebar", user: @book.user %>
   </div>
 </div>

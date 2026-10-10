@@ -9,25 +9,39 @@
       </ul>
     </div>
   <% end %>
+
   <div class="row">
     <div class="col-md-8 offset-md-1">
       <h1>Books</h1>
+
       <div class="row">
         <% @books.each do |book| %>
           <div class="col-md-4 mb-3">
             <div class="card">
               <div class="card-body">
+
                 <%= link_to user_path(book.user) do %>
                   <i class="fa-solid fa-user"></i>
                 <% end %>
-                <h5 class="card-title"><%= link_to book.title, book_path(book) %></h5>
+
+                <h5 class="card-title">
+                  <%= link_to book.title, book_path(book) %>
+                </h5>
+
                 <p class="card-text"><%= book.body %></p>
+
+                <!-- ここにいいねボタンを入れる -->
+                <%= render 'favorites/favorite', book: book %>
+                <p>コメント数：<%= book.book_comments.count %></p>
+
               </div>
             </div>
           </div>
         <% end %>
       </div>
+
     </div>
+
     <%= render "shared/sidebar", user: Current.session.user %>
   </div>
 </div>

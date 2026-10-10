@@ -1,0 +1,22 @@
+<% if Current.session.user.present? %>
+  <% user = Current.session.user %>
+
+  <% if book.favorites.exists?(user_id: user.id) %>
+    <%= link_to book_favorite_path(book),
+                data: { turbo_method: :delete },
+                class: "btn btn-danger" do %>
+      いいねを外す
+    <% end %>
+  <% else %>
+    <%= link_to book_favorite_path(book),
+                data: { turbo_method: :post },
+                class: "btn btn-primary" do %>
+      いいねする
+    <% end %>
+  <% end %>
+
+  <p>いいね数：<%= book.favorites.count %></p>
+
+<% else %>
+  <p>ログインするといいねできます</p>
+<% end %>

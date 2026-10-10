@@ -9,4 +9,12 @@ Rails.application.routes.draw do
   resources :users, except: [:new]
 
   resources :books
+
+  resources :books do
+    resource :favorite, only: [:create, :destroy]
+  end
+
+  resources :books do
+    resources :book_comments, only: [:create, :destroy]
+  end
 end
